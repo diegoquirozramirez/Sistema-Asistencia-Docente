@@ -1,0 +1,159 @@
+{% extends 'index.html' %}
+{% block content %}
+    <h4 class="text-center">Contro de Asistencia</h4>
+    <h3 class="text-center" ><a href="{% url 'Docente:Cursos' %}">< Cursos</a></h3>
+    <div class="container">
+      <!--form class="" action="index.html" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+      </form-->
+
+      <table class="table">
+
+  <tbody>
+    <tr>
+
+      <td>Nombres y Apellidos</td>
+      <td>Asignatura</td>
+      <td>Categoria</td>
+
+    </tr>
+    <tr>
+
+      <td>{{ request.user }}</td>
+      <td>{{ asignatura.curso }}</td>
+      <td>{{ categoria.categoria }}</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<table class="table">
+
+    <tbody>
+    <tr>
+
+    <td>Año</td>
+    <td>Semestre</td>
+    <td>Turno</td>
+    <td>Aula</td>
+    <td>Sección</td>
+    </tr>
+    <tr>
+
+    <td>{{ asignatura.año }}</td>
+    <td>{{ asignatura.idciclo }}</td>
+    <td>{{ asignatura.turno }}</td>
+    <td>{{ asignatura.aula }}</td>
+    <td>{{ asignatura.seccion }}</td>
+    </tr>
+
+    </tbody>
+</table>
+
+<h1>Marcaje</h1>
+<hr>
+
+
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">H. Entrada</th>
+        <th scope="col">H. Salida</th>
+        <th scope="col">Actividad</th>
+        <th scope="col">F. Digital</th>
+        <th scope="col">Observaciones</th>
+        <th scope="col">Usuario</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if horario %}
+      {% for horario in horario %}
+      <tr>
+
+        <td>{{ horario.date_time_entrada.hour }}:{{ horario.date_time_entrada.minute }}</td>
+        <td>{{ horario.date_time_salida.hour }}:{{ horario.date_time_salida.minute }}</td>
+        <td>{{ horario.actividad }}</td>
+        <td>{{ horario.f_digital }}</td>
+        <td>{{ horario.observa }}</td>
+        <td>{{ horario.iduser }}</td>
+
+
+
+
+      </tr>
+      {% endfor %}
+      {% endif %}
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan="3"><a class="form-control text-center btn btn-primary" href="{% url 'Docente:MarcarEntrada' asignatura.id  %}">Marcar Entrada</a>  </td>
+        <td colspan="3"><a class="form-control text-center btn btn-primary" href="{% url 'Docente:MarcarSalida' asignatura.id  %}">Marcar Salida</a> </td>
+      </tr>
+      <tr>
+        <th colspan="3">Hora de Entrada </th>
+        <th colspan="3">Hora de Salida </th>
+      </tr>
+      <tr>
+        <td colspan="3"><p align="center"><span style="font-size:80px">{{ horaentrada.h_entrada.hour }}:{{ horaentrada.h_entrada.minute }}:{{ horaentrada.h_entrada.second }}</span> </p></td>
+        <td colspan="3"><p align="center"><span style="font-size:80px">{{ horasalida.h_salida.hour }}:{{ horasalida.h_salida.minute }}:{{ horasalida.h_salida.second }}</span> </p> </td>
+      </tr>
+      <tr>
+        {% if diferenciaHEntrada  %}
+        <td colspan="3"><p align="center"><span style="color:red; font-size:25px">Tarde: {{ diferenciaHEntrada }}</span></p></td>
+        {% endif %}
+        {% if diferenciaHSalida  %}
+        <td colspan="3"><p align="center"><span style="color:red; font-size:25px">Extra: {{ diferenciaHSalida }}</span></p></td>
+        {% endif %}
+      </tr>
+    </tbody>
+
+
+</table>
+
+<hr>
+
+
+
+      <!--form class=" " method="POST">
+        {% csrf_token %}
+        <p>
+          <div class='input-group date' id='datetimepicker2'>
+              <input type='text' class="form-control" name="h_entrada" maxlength="50" required="" placeholder="Hora de Entrada" id="id_h_entrada" />
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+          </div>
+
+
+        </p>
+        <p>
+          <div class='input-group date' id='datetimepicker3'>
+              <input type='text' class="form-control" name="h_salida" maxlength="50" required="" placeholder="Hora de Salida" id="id_h_salida" />
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+          </div>
+
+        </p>
+
+          <input type="text" name="h_salida" maxlength="50" required="" placeholder="Hora de Salida" id="id_h_salida" class="form-control">
+        </p>
+        <p> <input type="text" name="actividad" maxlength="50" required="" placeholder="Actividad" id="id_actividad" class="form-control"></p>
+        <p> <input type="text" name="f_digital" maxlength="50" required="" placeholder="Firma Digital" id="id_f_digital" class="form-control"></p>
+        <p> <input type="text" name="observa" maxlength="50" required="" placeholder="Observaciones" id="id_observa" class="form-control"></p>
+        <br><p align="center">
+          <input type="submit"  value="Asignar" class="btn bnt-primary">
+        </p>
+      </form-->
+
+
+<br>
+<br><br>
+
+  <script src="../../static/js/app.js" charset="utf-8"></script>
+{% endblock %}

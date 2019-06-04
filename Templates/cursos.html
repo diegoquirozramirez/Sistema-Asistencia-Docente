@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<h2 class="text-center"><a  href="{% url 'Docente:index' %}">< Panel</a></h2>
+    <div class="container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Ciclo</th>
+            <th scope="col">Cursos</th>
+            <th scope="col">Turno</th>
+            <th scope="col">Aula</th>
+            <th scope="col">Seccion</th>
+            <th scope="col">Año</th>
+
+          </tr>
+        </thead>
+        <tbody>
+    {% if cursos %}
+        {% for cursos in cursos %}
+          <tr>
+
+            <td> {{ cursos.año }} - {{ cursos.idciclo }}</td>
+            <td><a href="{% url 'Docente:HorarioEscuela' cursos.id %}">{{ cursos.curso }}</a></td>
+            <td>  {{ cursos.turno }}</td>
+            <td>  {{ cursos.aula }}</td>
+            <td>  {{ cursos.seccion }}</td>
+            <td>  {{ cursos.año }}</td>
+
+          </tr>
+                {% endfor %}
+      {% endif %}
+        </tbody>
+
+    </table>
+    </div>
+  {% endblock %}
