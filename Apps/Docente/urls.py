@@ -1,4 +1,4 @@
-from Apps.Docente.views import MarcarSalida, HorarioEscuela,MarcarEntrada, index, Cursos
+from Apps.Docente.views import Asistencia, MarcarSalida, HorarioEscuela,MarcarEntrada, index, Cursos
 from django.urls import path
 
 app_name = 'Docente'
@@ -9,6 +9,7 @@ urlpatterns = [
     path('Horario/<idcur>', HorarioEscuela, name='HorarioEscuela'),
     path('Marcar/Entrada/<idcur>', MarcarEntrada, name='MarcarEntrada'),
     path('Marcar/Salida/<idcur>', MarcarSalida, name='MarcarSalida'),
+    path('Asistencia', Asistencia, name='Asistencia'),
 
 
 ]

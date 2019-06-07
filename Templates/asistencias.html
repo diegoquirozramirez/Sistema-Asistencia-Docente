@@ -1,0 +1,32 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container">
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col" class="text-center">Codigo</th>
+      <th scope="col" class="text-center">Curso</th>
+      <th scope="col" class="text-center">Fecha de Marcaje - Entrada</th>
+      <th scope="col" class="text-center">Hora de Marcaje - Entrada</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if asistencias %}
+      {% for asistencias in asistencias %}
+        <tr>
+          <th scope="row" class="text-center">{{ asistencias.cod_entrada }}</th>
+          <th scope="row" class="text-center">{{ asistencias.idcurso.curso }}</th>
+          <th scope="row" class="text-center">{{ asistencias.f_entrada }}</th>
+          <th scope="row" class="text-center">{{ asistencias.h_entrada_str }}</th>
+        </tr>
+      {% endfor %}
+    {% endif %}
+  </tbody>
+</table>
+</div>
+
+
+{% endblock %}

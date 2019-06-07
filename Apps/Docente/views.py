@@ -129,3 +129,9 @@ def Cursos(request):
     cursos = Curso.objects.filter(iduser_id=request.user.id)
     contexto = {'cursos': cursos}
     return render(request, 'cursos.html', contexto)
+
+
+def Asistencia(request):
+    asistencias = HoraEntrada.objects.filter(iduser_id=request.user.id)
+    contexto = {'asistencias':asistencias}
+    return render(request, 'asistencias.html', contexto)
