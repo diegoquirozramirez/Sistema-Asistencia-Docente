@@ -7,6 +7,13 @@ from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
 import time
+
+### para try exceptions
+from django.db import IntegrityError
+from django.shortcuts import render_to_response
+
+
+
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
@@ -37,35 +44,53 @@ def HorarioEscuela(request, idcur):
     categoria = get_object_or_404(Categoria, iduser_id=request.user.id)
     asignatura = get_object_or_404(Curso, id=idcur)
     horario = Horario.objects.filter(idcurso_id=idcur)
-    horaentrada = HoraEntrada.objects.last()
-    horasalida = HoraSalida.objects.last()
-    #calcular la tardanza llegada
+
+    # horario establecido por escuela
     hora_escuela = Horario.objects.get(idcurso_id=idcur)
     b = hora_escuela.date_time_entrada
 
-    diferenciaHEntrada = horaentrada.h_entrada - b
-    #calcular la hora de salida excedida
+    # horario establecido por escuela
     hora_escuela = Horario.objects.get(idcurso_id=idcur)
     a = hora_escuela.date_time_salida
 
-    diferenciaHSalida = horasalida.h_salida - a
 
-    contexto = {'horario':horario,'categoria':categoria, 'asignatura':asignatura, 'horaentrada':horaentrada, 'horasalida':horasalida,'diferenciaHEntrada':diferenciaHEntrada,'diferenciaHSalida':diferenciaHSalida}
+    #Hora de Entrada
+    hora_entrada = time.strftime("%Y/%m/%d")
+    date_con = datetime.datetime.strptime(hora_entrada, '%Y/%m/%d')
+    hora_marcada_entrada = HoraEntrada.objects.filter(f_entrada=hora_entrada).filter(idcurso_id=idcur) #objects.last()
+
+    contexto = {'horario':horario,'categoria':categoria, 'asignatura':asignatura,'hora_marcada_entrada':hora_marcada_entrada }#, 'horaentrada':horaentrada, 'horasalida':horasalida,'diferenciaHEntrada':diferenciaHEntrada,'diferenciaHSalida':diferenciaHSalida}
     return render(request, 'horario.html', contexto)
 
 
-
-
-
 def MarcarEntrada(request, idcur):
-    categoria = get_object_or_404(Categoria, iduser_id=request.user.id)
-    asignatura = get_object_or_404(Curso, id=idcur)
-    horario = Horario.objects.filter(idcurso_id=idcur)
-    hora_entrada = time.strftime("%Y/%m/%d %I:%M:%S")
-    date_con = datetime.datetime.strptime(hora_entrada, '%Y/%m/%d %H:%M:%S')
-    b = HoraEntrada(h_entrada=date_con, iduser_id=request.user.id, idcurso_id=idcur)
-    b.save()
-    return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args=(str(idcur))))
+    try:
+        categoria = get_object_or_404(Categoria, iduser_id=request.user.id)
+        asignatura = get_object_or_404(Curso, id=idcur)
+        horario = Horario.objects.filter(idcurso_id=idcur)
+        # para la hora de marcaje
+        hora_entrada = time.strftime("%I:%M")
+        date_con = datetime.datetime.strptime(hora_entrada, '%H:%M')
+        ##############################################################
+        """
+        cod_entrada str
+        h_entrada datetime
+        h_entrada_str str
+        f_entrada str
+        iduser
+        idcurso
+        """
+        #############################################################3
+        #Codigo de horario de entrada
+        cod_hora_entrada = time.strftime("%Y/%m/%d")
+        cod_entra = datetime.datetime.strptime(cod_hora_entrada, '%Y/%m/%d')
+        ####################################################################
+        ################################################################
+        b = HoraEntrada(cod_entrada=str(cod_entra)+str(idcur),h_entrada=date_con,f_entrada=cod_hora_entrada,h_entrada_str= hora_entrada, iduser_id=request.user.id, idcurso_id=idcur)
+        b.save()
+        return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args=(str(idcur))))
+    except IntegrityError as e:
+        return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args=(str(idcur))))
 
 def MarcarSalida(request, idcur):
     categoria = get_object_or_404(Categoria, iduser_id=request.user.id)
@@ -73,7 +98,11 @@ def MarcarSalida(request, idcur):
     horario = Horario.objects.filter(idcurso_id=idcur)
     hora_salida = time.strftime("%Y/%m/%d %I:%M:%S")
     date_con = datetime.datetime.strptime(hora_salida, '%Y/%m/%d %H:%M:%S')
-    b = HoraSalida(h_salida=date_con, iduser_id=request.user.id, idcurso_id=idcur)
+    #codigo hora de salida
+    cod_hora_salida = time.strftime("%Y/%m/%d")
+    cod_sali = datetime.datetime.strptime(cod_hora_entrada, '%Y/%m/%d')
+    ##########################################################################
+    b = HoraSalida(cod_salida=cod_sali, h_salida=date_con, iduser_id=request.user.id, idcurso_id=idcur)
     b.save()
     return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args=(str(idcur))))
 

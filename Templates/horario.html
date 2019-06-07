@@ -99,7 +99,7 @@
         <th colspan="3">Hora de Salida </th>
       </tr>
       <tr>
-        <td colspan="3"><p align="center"><span style="font-size:80px">{{ horaentrada.h_entrada.hour }}:{{ horaentrada.h_entrada.minute }}:{{ horaentrada.h_entrada.second }}</span> </p></td>
+        <td colspan="3"><p align="center"><span style="font-size:80px">{% if hora_marcada_entrada %}{% for hora_marcada_entrada in hora_marcada_entrada %}{{ hora_marcada_entrada.h_entrada_str }}{% endfor %}{% endif %}</span> </p></td>
         <td colspan="3"><p align="center"><span style="font-size:80px">{{ horasalida.h_salida.hour }}:{{ horasalida.h_salida.minute }}:{{ horasalida.h_salida.second }}</span> </p> </td>
       </tr>
       <tr>
