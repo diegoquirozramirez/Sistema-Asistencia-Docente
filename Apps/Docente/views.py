@@ -56,10 +56,13 @@ def HorarioEscuela(request, idcur):
 
     #Hora de Entrada
     hora_entrada = time.strftime("%Y/%m/%d")
-    date_con = datetime.datetime.strptime(hora_entrada, '%Y/%m/%d')
+    #hora de Salida
+    hora_salida = time.strftime("%Y/%m/%d")
+    #date_con = datetime.datetime.strptime(hora_entrada, '%Y/%m/%d')
     hora_marcada_entrada = HoraEntrada.objects.filter(f_entrada=hora_entrada).filter(idcurso_id=idcur) #objects.last()
+    hora_marcada_salida = HoraSalida.objects.filter(f_salida=hora_salida).filter(idcurso_id=idcur)
 
-    contexto = {'horario':horario,'categoria':categoria, 'asignatura':asignatura,'hora_marcada_entrada':hora_marcada_entrada }#, 'horaentrada':horaentrada, 'horasalida':horasalida,'diferenciaHEntrada':diferenciaHEntrada,'diferenciaHSalida':diferenciaHSalida}
+    contexto = {'horario':horario,'categoria':categoria, 'asignatura':asignatura,'hora_marcada_entrada':hora_marcada_entrada, 'hora_marcada_salida':hora_marcada_salida }#, 'horaentrada':horaentrada, 'horasalida':horasalida,'diferenciaHEntrada':diferenciaHEntrada,'diferenciaHSalida':diferenciaHSalida}
     return render(request, 'horario.html', contexto)
 
 
@@ -93,18 +96,32 @@ def MarcarEntrada(request, idcur):
         return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args=(str(idcur))))
 
 def MarcarSalida(request, idcur):
-    categoria = get_object_or_404(Categoria, iduser_id=request.user.id)
-    asignatura = get_object_or_404(Curso, id=idcur)
-    horario = Horario.objects.filter(idcurso_id=idcur)
-    hora_salida = time.strftime("%Y/%m/%d %I:%M:%S")
-    date_con = datetime.datetime.strptime(hora_salida, '%Y/%m/%d %H:%M:%S')
-    #codigo hora de salida
-    cod_hora_salida = time.strftime("%Y/%m/%d")
-    cod_sali = datetime.datetime.strptime(cod_hora_entrada, '%Y/%m/%d')
-    ##########################################################################
-    b = HoraSalida(cod_salida=cod_sali, h_salida=date_con, iduser_id=request.user.id, idcurso_id=idcur)
-    b.save()
-    return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args=(str(idcur))))
+    try:
+        categoria = get_object_or_404(Categoria, iduser_id=request.user.id)
+        asignatura = get_object_or_404(Curso, id=idcur)
+        horario = Horario.objects.filter(idcurso_id=idcur)
+        # maracaje de salida
+        hora_salida = time.strftime("%I:%M")
+        date_con = datetime.datetime.strptime(hora_salida, '%H:%M')
+        ###############################################################
+        """
+        cod_salida
+        h_salida
+        f_salida
+        h_salida_str
+        iduser
+        idcurso
+        """
+        ###############################################################
+        #codigo hora de salida
+        cod_hora_salida = time.strftime("%Y/%m/%d")
+        cod_sali = datetime.datetime.strptime(cod_hora_salida, '%Y/%m/%d')
+        ##########################################################################
+        b = HoraSalida(cod_salida=str(cod_sali)+str(idcur), h_salida=date_con,f_salida=cod_hora_salida,h_salida_str=hora_salida, iduser_id=request.user.id, idcurso_id=idcur)
+        b.save()
+        return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args=(str(idcur))))
+    except IntegrityError as e:
+        return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args=(str(idcur))))
 
 
 
