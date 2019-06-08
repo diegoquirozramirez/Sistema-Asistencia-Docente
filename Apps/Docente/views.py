@@ -60,7 +60,7 @@ def HorarioEscuela(request, idcur):
     hora_salida = time.strftime("%Y/%m/%d")
     #date_con = datetime.datetime.strptime(hora_entrada, '%Y/%m/%d')
     hora_marcada_entrada = HoraEntrada.objects.filter(f_entrada=hora_entrada).filter(idcurso_id=idcur) #objects.last()
-    hora_marcada_salida = HoraSalida.objects.filter(f_salida=hora_salida).filter(idcurso_id=idcur)
+    hora_marcada_salida = HoraSalida.objects.filter(id_hora_entrada__in=hora_marcada_entrada)
 
     contexto = {'horario':horario,'categoria':categoria, 'asignatura':asignatura,'hora_marcada_entrada':hora_marcada_entrada, 'hora_marcada_salida':hora_marcada_salida }#, 'horaentrada':horaentrada, 'horasalida':horasalida,'diferenciaHEntrada':diferenciaHEntrada,'diferenciaHSalida':diferenciaHSalida}
     return render(request, 'horario.html', contexto)
@@ -95,7 +95,7 @@ def MarcarEntrada(request, idcur):
     except IntegrityError as e:
         return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args=(str(idcur))))
 
-def MarcarSalida(request, idcur):
+def MarcarSalida(request, idcur, idhe):
     try:
         categoria = get_object_or_404(Categoria, iduser_id=request.user.id)
         asignatura = get_object_or_404(Curso, id=idcur)
@@ -117,7 +117,7 @@ def MarcarSalida(request, idcur):
         cod_hora_salida = time.strftime("%Y/%m/%d")
         cod_sali = datetime.datetime.strptime(cod_hora_salida, '%Y/%m/%d')
         ##########################################################################
-        b = HoraSalida(cod_salida=str(cod_sali)+str(idcur), h_salida=date_con,f_salida=cod_hora_salida,h_salida_str=hora_salida, iduser_id=request.user.id, idcurso_id=idcur)
+        b = HoraSalida(cod_salida=str(cod_sali)+str(idcur), h_salida=date_con,f_salida=cod_hora_salida,h_salida_str=hora_salida,id_hora_entrada_id=idhe )#iduser_id=request.user.id, idcurso_id=idcur)
         b.save()
         return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args=(str(idcur))))
     except IntegrityError as e:
@@ -133,5 +133,6 @@ def Cursos(request):
 
 def Asistencia(request):
     asistencias = HoraEntrada.objects.filter(iduser_id=request.user.id)
-    contexto = {'asistencias':asistencias}
+    asistencias_salida = HoraSalida.objects.filter(id_hora_entrada__in=asistencias)
+    contexto = {'asistencias':asistencias, 'asistencias_salida': asistencias_salida}
     return render(request, 'asistencias.html', contexto)

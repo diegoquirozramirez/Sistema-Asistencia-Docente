@@ -92,15 +92,38 @@
       </tr>
       <tr>
         <td colspan="3"><a class="form-control text-center btn btn-primary" href="{% url 'Docente:MarcarEntrada' asignatura.id  %}">Marcar Entrada</a>  </td>
-        <td colspan="3"><a class="form-control text-center btn btn-primary" href="{% url 'Docente:MarcarSalida' asignatura.id  %}">Marcar Salida</a> </td>
-      </tr>
+        </tr>
       <tr>
         <th colspan="3">Hora de Entrada </th>
         <th colspan="3">Hora de Salida </th>
       </tr>
       <tr>
-        <td colspan="3"><p align="center"><span style="font-size:80px">{% if hora_marcada_entrada %}{% for hora_marcada_entrada in hora_marcada_entrada %}{{ hora_marcada_entrada.h_entrada_str }}{% endfor %}{% endif %}</span> </p></td>
-        <td colspan="3"><p align="center"><span style="font-size:80px">{% if hora_marcada_salida %}{% for hora_marcada_salida in hora_marcada_salida %}{{ hora_marcada_salida.h_salida_str }}{% endfor %}{% endif %}</span> </p> </td>
+        <td colspan="3">
+          <p align="center">
+          <span style="font-size:80px">
+          {% if hora_marcada_entrada %}
+            {% for hora_marcada_entrada in hora_marcada_entrada %}
+              {{ hora_marcada_entrada.h_entrada_str }}
+              <td colspan="3">
+                <a class="form-control text-center btn btn-primary" href="{% url 'Docente:MarcarSalida' asignatura.id hora_marcada_entrada.id  %}">
+                  Marcar Salida
+                </a>
+                {% if hora_marcada_salida %}
+                {% for hora_marcada_salida in hora_marcada_salida %}
+                <p align="center">
+                <span style="font-size:80px">
+                {{ hora_marcada_salida.h_salida_str }}
+                </span>
+                </p>
+                {% endfor %}
+                {% endif %}
+              </td>
+              {% endfor %}
+          {% endif %}
+          </span>
+          </p>
+        </td>
+        <!--td colspan="3"><p align="center"><span style="font-size:80px">{% if hora_marcada_salida %}{% for hora_marcada_salida in hora_marcada_salida %}{{ hora_marcada_salida.h_salida_str }}{% endfor %}{% endif %}</span> </p> </td-->
       </tr>
       <tr>
         {% if diferenciaHEntrada  %}

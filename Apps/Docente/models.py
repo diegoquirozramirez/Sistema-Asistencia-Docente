@@ -41,7 +41,8 @@ class HoraSalida(models.Model):
     h_salida= models.DateTimeField(null=True, blank=True)
     f_salida = models.CharField(null=True, blank=True, max_length=50)
     h_salida_str = models.CharField(null=True, blank=True, max_length=50)
-    iduser = models.ForeignKey(User, on_delete=models.CASCADE)
-    idcurso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    id_hora_entrada = models.ForeignKey(HoraEntrada, on_delete=models.CASCADE)
+    #iduser = models.ForeignKey(User, on_delete=models.CASCADE)
+    #idcurso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     def __str__(self):
-        return '{} | {} | {} '.format(self.h_salida, self.idcurso, self.iduser)
+        return '{} | {} '.format(self.h_salida, self.id_hora_entrada)

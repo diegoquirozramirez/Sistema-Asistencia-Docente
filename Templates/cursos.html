@@ -19,7 +19,7 @@
     {% if cursos %}
         {% for cursos in cursos %}
           <tr>
-
+{{ cursos.id }}
             <td> {{ cursos.año }} - {{ cursos.idciclo }}</td>
             <td><a href="{% url 'Docente:HorarioEscuela' cursos.id %}">{{ cursos.curso }}</a></td>
             <td>  {{ cursos.turno }}</td>

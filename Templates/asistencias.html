@@ -1,31 +1,47 @@
 {% extends 'index.html' %}
 
 {% block content %}
+<p align="center"> <a href="{% url 'Docente:index' %}">
+ Panel
+</a></p>
+
 <div class="container">
 
+<div class="row">
 
-<table class="table">
+<div class="col-6">
+
+<table class="table" >
   <thead>
     <tr>
       <th scope="col" class="text-center">Codigo</th>
       <th scope="col" class="text-center">Curso</th>
-      <th scope="col" class="text-center">Fecha de Marcaje - Entrada</th>
+      <th scope="col" class="text-center">Fecha de Marcaje</th>
       <th scope="col" class="text-center">Hora de Marcaje - Entrada</th>
+      <th scope="col" class="text-center">Hora de Marcaje - Salida</th>
+
     </tr>
   </thead>
   <tbody>
-    {% if asistencias %}
-      {% for asistencias in asistencias %}
+    {% if asistencias_salida %}
+      {% for asistencias_salida in asistencias_salida %}
         <tr>
-          <th scope="row" class="text-center">{{ asistencias.cod_entrada }}</th>
-          <th scope="row" class="text-center">{{ asistencias.idcurso.curso }}</th>
-          <th scope="row" class="text-center">{{ asistencias.f_entrada }}</th>
-          <th scope="row" class="text-center">{{ asistencias.h_entrada_str }}</th>
+          <th scope="row" class="text-center">{{ asistencias_salida.id_hora_entrada.idcurso.año }} -
+          {{ asistencias_salida.id_hora_entrada.idcurso.idciclo }} </th>
+          <th scope="row" class="text-center">{{ asistencias_salida.id_hora_entrada.idcurso.curso }}</th>
+          <th scope="row" class="text-center">{{ asistencias_salida.id_hora_entrada.f_entrada }}</th>
+          <th scope="row" class="text-center">{{ asistencias_salida.id_hora_entrada.h_entrada_str }}</th>
+          <th scope="row" class="text-center">{{ asistencias_salida.h_salida_str }}</th>
         </tr>
       {% endfor %}
     {% endif %}
   </tbody>
 </table>
+
+
+</div>
+
+</div>
 </div>
 
 
