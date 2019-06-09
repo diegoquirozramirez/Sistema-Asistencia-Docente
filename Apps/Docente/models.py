@@ -18,8 +18,8 @@ class Horario(models.Model):
     actividad = models.CharField(max_length=50)
     f_digital = models.CharField(max_length=50)
     observa = models.CharField(max_length=50)
-    date_time_entrada = models.DateTimeField(null=True, blank=True)
-    date_time_salida = models.DateTimeField(null=True, blank=True)
+    date_time_entrada = models.TimeField(null=True, blank=True)
+    date_time_salida = models.TimeField(null=True, blank=True)
     iduser = models.ForeignKey(User, on_delete=models.CASCADE)
     idcurso = models.ForeignKey(Curso, on_delete=models.CASCADE)
 

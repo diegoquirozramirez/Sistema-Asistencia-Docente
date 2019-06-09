@@ -11,10 +11,11 @@ from django.contrib.auth.models import User
 ### para try exceptions
 from django.db import IntegrityError
 from django.shortcuts import render_to_response
+from django.core.exceptions import MultipleObjectsReturned
 
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-
+from django.db.models import Max
 ########################
 from django.conf import settings
 import reportlab
@@ -66,38 +67,43 @@ def index(request):
 #    return render(request, 'horario.html', contexto)
 
 def HorarioEscuela(request, idcur):
-    categoria = get_object_or_404(Categoria, iduser_id=request.user.id)
+
+    #categoria = get_object_or_404(Categoria, iduser_id=request.user.id)
+    categoria = Categoria.objects.filter(iduser_id=request.user.id).first()
     asignatura = get_object_or_404(Curso, id=idcur)
     horario = Horario.objects.filter(idcurso_id=idcur)
 
-    # horario establecido por escuela
-    hora_escuela = Horario.objects.get(idcurso_id=idcur)
-    b = hora_escuela.date_time_entrada
+        # horario establecido por escuela
+    hora_escuela = Horario.objects.filter(idcurso_id=idcur)
+        #b = hora_escuela.date_time_entrada
 
-    # horario establecido por escuela
-    hora_escuela = Horario.objects.get(idcurso_id=idcur)
-    a = hora_escuela.date_time_salida
+        # horario establecido por escuela
+        #hora_escuela = Horario.objects.get(idcurso_id=idcur)
+        #a = hora_escuela.date_time_salida
 
 
-    #Hora de Entrada
+        #Hora de Entrada
     hora_entrada = time.strftime("%Y/%m/%d")
-    #hora de Salida
+        #hora de Salida
     hora_salida = time.strftime("%Y/%m/%d")
-    #date_con = datetime.datetime.strptime(hora_entrada, '%Y/%m/%d')
+        #date_con = datetime.datetime.strptime(hora_entrada, '%Y/%m/%d')
     hora_marcada_entrada = HoraEntrada.objects.filter(f_entrada=hora_entrada).filter(idcurso_id=idcur) #objects.last()
     hora_marcada_salida = HoraSalida.objects.filter(id_hora_entrada__in=hora_marcada_entrada)
+    #except MultipleObjectsReturned:
+        #hora_escuela = Horario.objects.filter(idcurso_id=idcur)[0]
 
-    contexto = {'horario':horario,'categoria':categoria, 'asignatura':asignatura,'hora_marcada_entrada':hora_marcada_entrada, 'hora_marcada_salida':hora_marcada_salida }#, 'horaentrada':horaentrada, 'horasalida':horasalida,'diferenciaHEntrada':diferenciaHEntrada,'diferenciaHSalida':diferenciaHSalida}
+    contexto = {'horario':horario, 'asignatura':asignatura,'categoria':categoria,'hora_marcada_entrada':hora_marcada_entrada, 'hora_marcada_salida':hora_marcada_salida }#, 'horaentrada':horaentrada, 'horasalida':horasalida,'diferenciaHEntrada':diferenciaHEntrada,'diferenciaHSalida':diferenciaHSalida}
     return render(request, 'horario.html', contexto)
 
 
 def MarcarEntrada(request, idcur):
     try:
-        categoria = get_object_or_404(Categoria, iduser_id=request.user.id)
+        categoria = Categoria.objects.filter(iduser_id=request.user.id).first()
         asignatura = get_object_or_404(Curso, id=idcur)
-        horario = Horario.objects.filter(idcurso_id=idcur)
+        #horario = Horario.objects.filter(idcurso_id=idcur)
         # para la hora de marcaje
-        hora_entrada = time.strftime("%I:%M")
+        hora_entrada = time.strftime("%H:%M")
+        #hora_entrada = datetime.datetime.now()
         date_con = datetime.datetime.strptime(hora_entrada, '%H:%M')
         ##############################################################
         """
@@ -122,11 +128,11 @@ def MarcarEntrada(request, idcur):
 
 def MarcarSalida(request, idcur, idhe):
     try:
-        categoria = get_object_or_404(Categoria, iduser_id=request.user.id)
+        categoria = Categoria.objects.filter(iduser_id=request.user.id).first()
         asignatura = get_object_or_404(Curso, id=idcur)
         horario = Horario.objects.filter(idcurso_id=idcur)
         # maracaje de salida
-        hora_salida = time.strftime("%I:%M")
+        hora_salida = time.strftime("%H:%M")
         date_con = datetime.datetime.strptime(hora_salida, '%H:%M')
         ###############################################################
         """
@@ -165,7 +171,9 @@ def Asistencia(request):
 ##############################################################################
 ###funciones de administrador
 def Consolidado(request):
-    categorias = Categoria.objects.filter()
+    #categorias = Categoria.objects.all().distinct('categoria')
+    #categorias = Categoria.objects.values_list('categoria', flat=True).order_by('categoria').distinct()
+    categorias=  Categoria.objects.annotate(order_temp=Max("iduser_id__username")).order_by("-order_temp")
     u = User.objects.all()
     a = HoraEntrada.objects.filter(iduser__in=u)
     asistencias = HoraSalida.objects.filter(id_hora_entrada__in=a)
