@@ -1,8 +1,11 @@
 {% extends 'index.html' %}
 {% block content %}
-    <h4 class="text-center">Contro de Asistencia</h4>
-    <h3 class="text-center" ><a href="{% url 'Docente:Cursos' %}">< Cursos</a></h3>
+    <br><br>
+
+
     <div class="container">
+      <h3 class="text-left" ><a href="{% url 'Docente:Cursos' %}">< Atrás</a></h3>
+      <hr class="display-4">
       <!--form class="" action="index.html" method="post">
         {% csrf_token %}
         {{ form.as_p }}
@@ -99,8 +102,8 @@
       </tr>
       <tr>
         <td colspan="3">
-          <p align="center">
-          <span style="font-size:80px">
+          <p align="center"><br>
+          <span style="font-size:50px">
           {% if hora_marcada_entrada %}
             {% for hora_marcada_entrada in hora_marcada_entrada %}
               {{ hora_marcada_entrada.h_entrada_str }}
@@ -110,8 +113,8 @@
                 </a>
                 {% if hora_marcada_salida %}
                 {% for hora_marcada_salida in hora_marcada_salida %}
-                <p align="center">
-                <span style="font-size:80px">
+                <p align="center"><br>
+                <span style="font-size:50px">
                 {{ hora_marcada_salida.h_salida_str }}
                 </span>
                 </p>

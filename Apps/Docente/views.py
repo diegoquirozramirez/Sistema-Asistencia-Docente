@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect,  get_object_or_404
-from Apps.Docente.models import  Horario, Categoria, HoraEntrada, HoraSalida
+from Apps.Docente.models import  Categoria, Horario, Categoria, HoraEntrada, HoraSalida
 from Apps.Docente.forms import HorarioForm, HoraEntradaForm
 from Apps.Curso.models import Curso, Ciclo
 from django.http import HttpResponse,  Http404, HttpResponseRedirect
@@ -7,15 +7,23 @@ from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
 import time
-
+from django.contrib.auth.models import User
 ### para try exceptions
 from django.db import IntegrityError
 from django.shortcuts import render_to_response
 
+from django.contrib.contenttypes.models import ContentType
+from django.db import models
 
 
 # Create your views here.
 def index(request):
+    us = User.objects.filter(id=request.user.id)
+    if us[0].id == 1:
+        context = {'us':us}
+        return render(request, 'index.html', context)
+    else:
+        return render(request, 'index.html')
     return render(request, 'index.html')
 
 #def Add_Horario(request, idcur):
@@ -136,3 +144,14 @@ def Asistencia(request):
     asistencias_salida = HoraSalida.objects.filter(id_hora_entrada__in=asistencias)
     contexto = {'asistencias':asistencias, 'asistencias_salida': asistencias_salida}
     return render(request, 'asistencias.html', contexto)
+
+
+def Consolidado(request):
+    categorias = Categoria.objects.filter()
+    u = User.objects.all()
+    a = HoraEntrada.objects.filter(iduser__in=u)
+    asistencias = HoraSalida.objects.filter(id_hora_entrada__in=a)
+    categorias = Categoria.objects.filter(iduser__in=u)
+
+    contexto = {'asistencias':asistencias, 'categorias':categorias}
+    return render(request, 'Consolidado.html', contexto)

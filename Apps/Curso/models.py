@@ -13,7 +13,7 @@ class Curso(models.Model):
     año = models.IntegerField()
     turno = models.CharField(max_length=50)
     aula = models.CharField(max_length=50)
-    seccion = models.CharField(max_length=50)
+    seccion = models.CharField(max_length=50)    
     idciclo = models.ForeignKey(Ciclo, on_delete=models.CASCADE)
     iduser = models.ForeignKey(User, on_delete=models.CASCADE)
     def __str__(self):

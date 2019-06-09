@@ -1,4 +1,4 @@
-from Apps.Docente.views import Asistencia, MarcarSalida, HorarioEscuela,MarcarEntrada, index, Cursos
+from Apps.Docente.views import Consolidado, Asistencia, MarcarSalida, HorarioEscuela,MarcarEntrada, index, Cursos
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 
@@ -11,6 +11,6 @@ urlpatterns = [
     path('Marcar/Entrada/<idcur>', login_required(MarcarEntrada), name='MarcarEntrada'),
     path('Marcar/Salida/<idcur>/<idhe>', login_required(MarcarSalida), name='MarcarSalida'),
     path('Asistencia', login_required(Asistencia), name='Asistencia'),
-
+    path('Asistencia/Consolidado', login_required(Consolidado), name='Consolidado'),
 
 ]

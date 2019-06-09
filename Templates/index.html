@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<!--html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title></title>
@@ -10,11 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
+
 <script async="" src="//www.google-analytics.com/analytics.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
@@ -24,38 +20,64 @@
 
     <script src="https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
 
-  <body>
-    <h1 class="text-center">Sistema de Asistencia</h1>
-<a href="{% url 'logout' %}">Cerrar Sesion</a>
+  <body-->
+{% extends 'registration/login.html' %}
+
   {% block content %}
+  <br><h1 class="text-center">Sistema de Asistencia</h1>
 
-<div class="container">
+  <div class="container">
+{% if us %}
+    <section id="feature">
+          <div class="container">
+               <div class="row">
+                    {% for us in us %}
+                    <div class="col-md-4 col-sm-4">
+                      <a href="#">
+                         <div class="feature-thumb">
+                              <span>01</span>
+                              <h3>---------</h3>
+                              <p>----------------------.</p>
+                              <p><strong>Estás en modo {{ us.username  }}</strong></p>
+                         </div>
+                      </a>
+                    </div>
+                    {% endfor %}
 
 
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Ver Curso Por Ciclos</th>
-          <th scope="col">Ver Asistencias</th>
+                    {% for us in us %}
+                    <div class="col-md-4 col-sm-4">
+                      <a href="#">
+                         <div class="feature-thumb">
+                              <span>02</span>
+                              <h3>Asistencias por colaborador</h3>
+                              <p>Identifique de manera detallada la puntualidad.</p>
+                              <p><strong>Estás en modo {{ us.username  }}</strong></p>
+                         </div>
+                      </a>
+                    </div>
+                    {% endfor %}
 
-        </tr>
-      </thead>
-      <tbody>
+                    {% for us in us %}
+                    <div class="col-md-4 col-sm-4">
 
-        <tr>
+                      <a href="{% url 'Docente:Consolidado' %}">
+                         <div class="feature-thumb">
+                              <span>03</span>
+                              <h3>Consolidado de Asistencias</h3>
+                              <p>Observa las asistencias de tus colaboradores, puedes decargarlo en formato PDF.</p>
+                              <p><strong>Estás en modo {{ us.username  }}</strong></p>
+                         </div>
+                      </a>
+                    </div>
+                    {% endfor %}
+               </div>
+          </div>
+     </section>
+{% endif %}
 
-          <td><a href="{% url 'Docente:Cursos' %}">Entrar</a></td>
-          <td><a href="{% url 'Docente:Asistencia' %}">Entrar</a></td>
-
-
-        </tr>
-
-      </tbody>
-
-  </table>
-
-</dvi>
+</div>
 {% endblock %}
 
-  </body>
-</html>
+  <!--/body>
+</html-->

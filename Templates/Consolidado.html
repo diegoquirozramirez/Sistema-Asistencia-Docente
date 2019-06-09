@@ -1,0 +1,63 @@
+{% extends 'index.html' %}
+
+{% block content %}
+  <br><h1 class="text-center">Sistema de Asistencia</h1>
+<div class="container">
+
+  {% if categorias %}
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col" class="text-center">Estado</th>
+        <th scope="col" class="text-center">Nombres Completos</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for categorias in categorias %}
+      <tr>
+        <th scope="row" class="text-center">{{ categorias.categoria }}</th>
+        <th scope="row" class="text-center">{{ categorias.iduser }}</th>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+<br>
+  <hr class="lead-4">
+<br>
+
+{% if asistencias %}
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+
+      <th scope="col" class="text-center">Docente</th>
+      <th scope="col" class="text-center">Ciclo</th>
+      <th scope="col" class="text-center">Curso</th>
+      <th scope="col" class="text-center">Hora de Llegada</th>
+      <th scope="col" class="text-center">Hora de Salida</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for asistencias in asistencias %}
+    <tr>
+
+      <th scope="row" class="text-center">{{ asistencias.id_hora_entrada.idcurso.iduser }}</th>
+      <th scope="row" class="text-center">{{ asistencias.id_hora_entrada.idcurso.idciclo }}</th>
+      <th scope="row" class="text-center">{{ asistencias.id_hora_entrada.idcurso.curso }}</th>
+      <th scope="row" class="text-center">{{ asistencias.id_hora_entrada.h_entrada_str }}</th>
+      <th scope="row" class="text-center">{{ asistencias.h_salida_str }}</th>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+
+
+
+
+</div>
+{% endblock %}
