@@ -33,7 +33,7 @@
 <table class="table">
   <thead class="thead-dark">
     <tr>
-
+      <th scope="col" class="text-center">Fecha</th>
       <th scope="col" class="text-center">Docente</th>
       <th scope="col" class="text-center">Ciclo</th>
       <th scope="col" class="text-center">Curso</th>
@@ -45,6 +45,7 @@
     {% for asistencias in asistencias %}
     <tr>
 
+      <th scope="row" class="text-center">{{ asistencias.f_salida }}</th>
       <th scope="row" class="text-center">{{ asistencias.id_hora_entrada.idcurso.iduser }}</th>
       <th scope="row" class="text-center">{{ asistencias.id_hora_entrada.idcurso.idciclo }}</th>
       <th scope="row" class="text-center">{{ asistencias.id_hora_entrada.idcurso.curso }}</th>

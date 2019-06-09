@@ -213,15 +213,15 @@ def generar_pdf(request):
     styles = getSampleStyleSheet()
     header = Paragraph("Consolidado de Asistencias", styles['Heading1'])
     docentes.append(header)
-    headings = ('Docente','Curso','Hora Entrada','Hora Salida','Fecha')
-    allclientes = [(p.id_hora_entrada.idcurso.iduser, p.id_hora_entrada.idcurso.curso, p.id_hora_entrada.h_entrada_str, p.h_salida_str, p.f_salida ) for p in HoraSalida.objects.all()]
+    headings = ('Fecha','Docente','Curso','Ciclo','Hora Entrada','Hora Salida')
+    allclientes = [(p.f_salida, p.id_hora_entrada.idcurso.iduser, p.id_hora_entrada.idcurso.curso,p.id_hora_entrada.idcurso.idciclo , p.id_hora_entrada.h_entrada_str, p.h_salida_str  ) for p in HoraSalida.objects.all()]
 
     print(allclientes)
 
     t = Table([headings] + allclientes)
     t.setStyle(TableStyle(
         [
-            ('GRID', (0, 0), (4, -1), 1, colors.dodgerblue),
+            ('GRID', (0, 0), (5, -1), 1, colors.dodgerblue),
             ('LINEBELOW', (0, 0), (-1, 0), 2, colors.darkblue),
             ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue),
         ]
