@@ -20,8 +20,10 @@
         <th scope="row" class="text-center">{{ categorias.iduser }}</th>
       </tr>
       {% endfor %}
+
     </tbody>
   </table>
+
   {% endif %}
 <br>
   <hr class="lead-4">
@@ -55,6 +57,13 @@
 </table>
 {% endif %}
 
+
+  <table class="table">
+    <tr>
+      <th scope="row" class="text-center"><a class="submit-btn form-control" href="{% url 'Docente:Reporte' %}" style="BACKGROUND:#2684B3; color:white">Exportar PDF</a></th>
+
+    </tr>
+  </table>
 
 
 

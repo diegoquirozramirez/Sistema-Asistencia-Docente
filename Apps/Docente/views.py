@@ -15,6 +15,23 @@ from django.shortcuts import render_to_response
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
+########################
+from django.conf import settings
+import reportlab
+import io
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
+
+
+##########################3
+from io import BytesIO
+from django.http import HttpResponse
+from django.views.generic import ListView
+from reportlab.platypus import SimpleDocTemplate, Paragraph, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import Table
 
 # Create your views here.
 def index(request):
@@ -145,7 +162,8 @@ def Asistencia(request):
     contexto = {'asistencias':asistencias, 'asistencias_salida': asistencias_salida}
     return render(request, 'asistencias.html', contexto)
 
-
+##############################################################################
+###funciones de administrador
 def Consolidado(request):
     categorias = Categoria.objects.filter()
     u = User.objects.all()
@@ -155,3 +173,61 @@ def Consolidado(request):
 
     contexto = {'asistencias':asistencias, 'categorias':categorias}
     return render(request, 'Consolidado.html', contexto)
+
+
+def some_view(request):
+    # Create a file-like buffer to receive PDF data.
+    buffer = io.BytesIO()
+
+    # Create the PDF object, using the buffer as its "file."
+    p = canvas.Canvas(buffer)
+
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    p.drawString(100, 100, "Hello world.")
+
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+
+    # FileResponse sets the Content-Disposition header so that browsers
+    # present the option to save the file.
+    return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
+
+
+def generar_pdf(request):
+    print("Genero el PDF")
+    response = HttpResponse(content_type='application/pdf')
+    pdf_name = "clientes.pdf"  # llamado clientes
+    # la linea 26 es por si deseas descargar el pdf a tu computadora
+    # response['Content-Disposition'] = 'attachment; filename=%s' % pdf_name
+    buff = BytesIO()
+    doc = SimpleDocTemplate(buff,
+                            pagesize=letter,
+                            rightMargin=40,
+                            leftMargin=40,
+                            topMargin=60,
+                            bottomMargin=18,
+                            )
+    docentes = []
+    styles = getSampleStyleSheet()
+    header = Paragraph("Consolidado de Asistencias", styles['Heading1'])
+    docentes.append(header)
+    headings = ('Docente','Curso','Hora Entrada','Hora Salida','Fecha')
+    allclientes = [(p.id_hora_entrada.idcurso.iduser, p.id_hora_entrada.idcurso.curso, p.id_hora_entrada.h_entrada_str, p.h_salida_str, p.f_salida ) for p in HoraSalida.objects.all()]
+
+    print(allclientes)
+
+    t = Table([headings] + allclientes)
+    t.setStyle(TableStyle(
+        [
+            ('GRID', (0, 0), (4, -1), 1, colors.dodgerblue),
+            ('LINEBELOW', (0, 0), (-1, 0), 2, colors.darkblue),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue),
+        ]
+    ))
+    docentes.append(t)
+    doc.build(docentes)
+    response.write(buff.getvalue())
+    buff.close()
+    return response
