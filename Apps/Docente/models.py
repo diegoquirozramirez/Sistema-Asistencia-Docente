@@ -7,7 +7,7 @@ from Apps.Curso.models import Curso
 class Categoria(models.Model):
     categoria = models.CharField(max_length=50)
     idcurso = models.ForeignKey(Curso, on_delete=models.CASCADE)
-    iduser = models.ForeignKey(User, on_delete=models.CASCADE)
+    iduser = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return '{} {}'.format(self.categoria, self.iduser)

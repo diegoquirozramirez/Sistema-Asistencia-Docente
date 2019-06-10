@@ -1,0 +1,41 @@
+{% extends 'index.html' %}
+
+{% block content  %}
+<h1 class="text-center">Configuraciones > Usuarios </h1>
+<br>
+<div class="container">
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Usuario</th>
+      <th scope="col">Nombres</th>
+      <th scope="col">Apellidos</th>
+      <th scope="col">Correo</th>
+    </tr>
+  </thead>
+  <tbody>
+{% if docentes %}
+{% for docentes in docentes %}
+    <tr>
+      <th scope="row">{{ docentes.id }}</th>
+      <th scope="row">{{ docentes.username }}</th>
+      <th scope="row">{{ docentes.first_name }}</th>
+      <th scope="row">{{ docentes.last_name }}</th>
+      <th scope="row">{{ docentes.email }}</th>
+
+    </tr>
+{% endfor %}
+{% endif %}
+    <tr>
+      <th colspan="5">
+        <a class="submit-btn form-control text-center" href="{% url 'Docente:RegistrarDocente' %}" style="BACKGROUND:#2684B3; color:white">Añadir</a>
+      </th>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+{% endblock %}

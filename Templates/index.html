@@ -33,11 +33,11 @@
                <div class="row">
                     {% for us in us %}
                     <div class="col-md-4 col-sm-4">
-                      <a href="#">
+                      <a href="{% url 'Docente:Configuracion' %}">
                          <div class="feature-thumb">
                               <span>01</span>
-                              <h3>---------</h3>
-                              <p>----------------------.</p>
+                              <h3>Configuraciones </h3>
+                              <p>Realiza ajustes que más necesites.</p>
                               <p><strong>Estás en modo {{ us.username  }}</strong></p>
                          </div>
                       </a>

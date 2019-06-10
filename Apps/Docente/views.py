@@ -33,7 +33,10 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import Table
-
+####################################3
+from django.contrib.auth.forms import UserCreationForm
+from django.views.generic import CreateView, ListView
+from django.urls import reverse_lazy
 # Create your views here.
 def index(request):
     us = User.objects.filter(id=request.user.id)
@@ -122,9 +125,9 @@ def MarcarEntrada(request, idcur):
         ################################################################
         b = HoraEntrada(cod_entrada=str(cod_entra)+str(idcur),h_entrada=date_con,f_entrada=cod_hora_entrada,h_entrada_str= hora_entrada, iduser_id=request.user.id, idcurso_id=idcur)
         b.save()
-        return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args=(str(idcur))))
+        return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args={str(idcur)}))
     except IntegrityError as e:
-        return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args=(str(idcur))))
+        return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args={str(idcur)}))
 
 def MarcarSalida(request, idcur, idhe):
     try:
@@ -150,9 +153,9 @@ def MarcarSalida(request, idcur, idhe):
         ##########################################################################
         b = HoraSalida(cod_salida=str(cod_sali)+str(idcur), h_salida=date_con,f_salida=cod_hora_salida,h_salida_str=hora_salida,id_hora_entrada_id=idhe )#iduser_id=request.user.id, idcurso_id=idcur)
         b.save()
-        return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args=(str(idcur))))
+        return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args={str(idcur)}))
     except IntegrityError as e:
-        return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args=(str(idcur))))
+        return HttpResponseRedirect(reverse('Docente:HorarioEscuela', args={str(idcur)}))
 
 
 
@@ -239,3 +242,19 @@ def generar_pdf(request):
     response.write(buff.getvalue())
     buff.close()
     return response
+
+
+
+def configuracion(request):
+    return render(request, 'configuracion/configuraciones.html')
+
+def AñadirDocente(request):
+    docentes = User.objects.all()
+    contexto = {'docentes':docentes}
+    return render(request, 'configuracion/docentes.html', contexto)
+
+class RegistroUsuario(CreateView):
+    model = User
+    template_name = "configuracion/add_docentes.html"
+    form_class = UserCreationForm
+    success_url = reverse_lazy('Docente:AñadirDocente')

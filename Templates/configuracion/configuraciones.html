@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+
+{% block content  %}
+<h1 class="text-center">Configuraciones</h1>
+<section id="feature">
+      <div class="container">
+           <div class="row">
+
+                <div class="col-md-4 col-sm-4">
+                  <a href="{% url 'Docente:AñadirDocente' %}">
+                     <div class="feature-thumb">
+                          <span>01</span>
+                          <h3>Añade Usuarios <br>(Docentes) </h3>
+                          <p>Añade Docentes para su organización.</p>
+                          <p><strong>Estás en modo {{ us.username  }}</strong></p>
+                     </div>
+                  </a>
+                </div>
+
+
+
+
+                <div class="col-md-4 col-sm-4">
+                  <a href="#">
+                     <div class="feature-thumb">
+                          <span>02</span>
+                          <h3>Dar de baja <br> (Docentes)</h3>
+                          <p>Da de baja a los colaboradores que ya no estes en tu organización</p>
+                          <p><strong>Estás en modo {{ us.username  }}</strong></p>
+                     </div>
+                  </a>
+                </div>
+
+                <!--div class="col-md-4 col-sm-4">
+
+                  <a href="{% url 'Docente:Consolidado' %}">
+                     <div class="feature-thumb">
+                          <span>03</span>
+                          <h3>Consolidado de Asistencias</h3>
+                          <p>Observa las asistencias de tus colaboradores, puedes decargarlo en formato PDF.</p>
+                          <p><strong>Estás en modo {{ us.username  }}</strong></p>
+                     </div>
+                  </a>
+                </div-->
+
+           </div>
+      </div>
+ </section>
+
+{% endblock %}
