@@ -1,4 +1,4 @@
-from Apps.Docente.views import  RegistroUsuario,AñadirDocente, configuracion,generar_pdf,some_view, Consolidado, Asistencia, MarcarSalida, HorarioEscuela,MarcarEntrada, index, Cursos
+from Apps.Docente.views import DardeBaja, Categoria_Add,Horarios_Admin, ConfHorario, Horario_Admin, RegistroUsuario,AñadirDocente, configuracion,generar_pdf,some_view, Consolidado, Asistencia, MarcarSalida, HorarioEscuela,MarcarEntrada, index, Cursos
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 
@@ -16,4 +16,9 @@ urlpatterns = [
     path('Configuraciones', login_required(configuracion), name='Configuracion'),
     path('Configuraciones/Docente', login_required(AñadirDocente), name='AñadirDocente'),
     path('Configuraciones/Docente/Registrar', login_required(RegistroUsuario.as_view()), name='RegistrarDocente'),
+    path('Configuraciones/Docente/Horario', login_required(Horario_Admin), name='Horario_Admin'),
+    path('Configuraciones/Docente/ConfHorario/<idcur>', login_required(ConfHorario), name='ConfHorario'),
+    path('Configuraciones/Docente/Horario/<idcur>', login_required(Horarios_Admin), name='Horarios_Admin'),
+    path('Configuraciones/Docente/Horario/Categoria/<idu>', login_required(Categoria_Add), name='Categoria_Add'),
+    path('Configuraciones/Docente/Horario/DarBaja/<idu>', login_required(DardeBaja), name='DardeBaja'),
 ]

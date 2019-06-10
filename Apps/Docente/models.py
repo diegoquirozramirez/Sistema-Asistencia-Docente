@@ -16,7 +16,7 @@ class Horario(models.Model):
     h_entrada = models.CharField(max_length=50)
     h_salida = models.CharField(max_length=50)
     actividad = models.CharField(max_length=50)
-    f_digital = models.CharField(max_length=50)
+    f_digital = models.CharField(max_length=50, blank=True)
     observa = models.CharField(max_length=50)
     date_time_entrada = models.TimeField(null=True, blank=True)
     date_time_salida = models.TimeField(null=True, blank=True)

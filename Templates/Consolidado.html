@@ -3,7 +3,7 @@
 {% block content %}
   <br><h1 class="text-center">Sistema de Asistencia</h1>
 <div class="container">
-
+  <h3 class="text-left" ><a href="{% url 'Docente:index' %}">< Atrás</a></h3><br>
   {% if categorias %}
   <table class="table">
     <thead class="thead-dark">
@@ -37,8 +37,8 @@
       <th scope="col" class="text-center">Docente</th>
       <th scope="col" class="text-center">Ciclo</th>
       <th scope="col" class="text-center">Curso</th>
-      <th scope="col" class="text-center">Hora de Llegada</th>
-      <th scope="col" class="text-center">Hora de Salida</th>
+      <th scope="col" class="text-center">Hora de Llegada | Hora de Salida</th>
+      <!--th scope="col" class="text-center">Hora de Salida</th-->
     </tr>
   </thead>
   <tbody>
@@ -49,8 +49,8 @@
       <th scope="row" class="text-center">{{ asistencias.id_hora_entrada.idcurso.iduser }}</th>
       <th scope="row" class="text-center">{{ asistencias.id_hora_entrada.idcurso.idciclo }}</th>
       <th scope="row" class="text-center">{{ asistencias.id_hora_entrada.idcurso.curso }}</th>
-      <th scope="row" class="text-center">{{ asistencias.id_hora_entrada.h_entrada_str }}</th>
-      <th scope="row" class="text-center">{{ asistencias.h_salida_str }}</th>
+      <th scope="row" class="text-center">{{ asistencias.id_hora_entrada.h_entrada_str }} | {{ asistencias.h_salida_str }}</th>
+      <!--th scope="row" class="text-center">{{ asistencias.h_salida_str }}</th-->
 
     </tr>
     {% endfor %}

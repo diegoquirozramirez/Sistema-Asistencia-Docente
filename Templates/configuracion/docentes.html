@@ -2,9 +2,9 @@
 
 {% block content  %}
 <h1 class="text-center">Configuraciones > Usuarios </h1>
-<br>
-<div class="container">
 
+<div class="container">
+  <h3 class="text-left" ><a href="{% url 'Docente:Configuracion' %}">< Atrás</a></h3><br>
 
 <table class="table table-striped">
   <thead>
@@ -14,6 +14,9 @@
       <th scope="col">Nombres</th>
       <th scope="col">Apellidos</th>
       <th scope="col">Correo</th>
+      <th scope="col">Activo</th>
+      <th scope="col" class="text-center">Dar (Alta/Baja)</th>
+      <th scope="col">Categoria</th>
     </tr>
   </thead>
   <tbody>
@@ -25,13 +28,16 @@
       <th scope="row">{{ docentes.first_name }}</th>
       <th scope="row">{{ docentes.last_name }}</th>
       <th scope="row">{{ docentes.email }}</th>
-
+      <th scope="row">{{ docentes.is_active }}</th>
+      <th scope="row"><a class="submit-btn form-control text-center" href="{% url 'Docente:DardeBaja' docentes.id  %}" style="BACKGROUND:#2684B3; color:white">Dar De (Alta / Baja)</a>
+      <th scope="row"><a class="submit-btn form-control text-center" href="{% url 'Docente:Categoria_Add' docentes.id  %}" style="BACKGROUND:#2684B3; color:white">Añadir</a>
+  </th>
     </tr>
 {% endfor %}
 {% endif %}
     <tr>
-      <th colspan="5">
-        <a class="submit-btn form-control text-center" href="{% url 'Docente:RegistrarDocente' %}" style="BACKGROUND:#2684B3; color:white">Añadir</a>
+      <th colspan="6">
+        <a class="submit-btn form-control text-center" href="{% url 'Docente:RegistrarDocente' %}" style="BACKGROUND:#2684B3; color:white">Más Docentes</a>
       </th>
     </tr>
   </tbody>

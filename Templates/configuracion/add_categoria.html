@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+
+
+{% block content  %}
+<h2 class="text-center">Configuraciones > Usuarios > Categoria </h2>
+<div class="container">
+    <h3 class="text-left" ><a href="{% url 'Docente:AñadirDocente' %}">< Atrás</a></h3><br>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+
+
+    <input type="submit" class="form-control" style="BACKGROUND:#2684B3; color:white" value="Agregar" />
+  </form><br>
+
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Identificador</th>
+        <th scope="col">Categoria</th>
+        <th scope="col">Docente</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% if categoria %}
+      {% for categoria in categoria %}
+      <tr>
+        <th scope="row">{{ categoria.id }}</th>
+        <th scope="row">{{ categoria.categoria }}</th>
+        <th scope="row">{{ categoria.iduser }}</th>
+
+      </tr>
+      {% endfor %}
+      {% endif %}
+    </tbody>
+  </table>
+
+</div>
+
+{% endblock %}

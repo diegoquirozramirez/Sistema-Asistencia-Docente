@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+
+{% block content  %}
+<h1 class="text-center">Configuraciones > Cursos </h1>
+<div class="container">
+  <h3 class="text-left" >
+    <a href="{% url 'Docente:Configuracion' %}">< Atrás</a>
+    <a class="related-widget-wrapper-link add-related" id="add_id_idcurso" href="http://localhost:8000/admin/Curso/curso/add/?_to_field=id&amp;_popup=1" title="Añadir otro curso" style="float:right">
+      Añadir <img src="/static/admin/img/icon-addlink.svg" alt="Añadir">
+    </a>
+  </h3><br>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Identificador</th>
+      <th scope="col">Curso</th>
+      <th scope="col">Ciclo</th>
+      <th scope="col">Docente</th>
+      <th scope="col"  class="text-center">Horario</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if cursos %}
+    {% for cursos in cursos %}
+    <tr>
+      <th scope="row">{{ cursos.id }}</th>
+      <th scope="row">{{ cursos.curso }}</th>
+      <th scope="row">{{ cursos.idciclo }}</th>
+      <th scope="row">{{ cursos.iduser }}</th>
+      <!--th scope="row"><a href="{% url 'Docente:Horarios_Admin' cursos.id %}"  class="form-control text-center" style="BACKGROUND:#2684B3; color:white" >Ver</a></th-->
+      <th scope="row"><a href="{% url 'Docente:ConfHorario' cursos.id %}"  class="form-control text-center" style="BACKGROUND:#2684B3; color:white" >Ver / Asignar</a></th>
+    </tr>
+    {% endfor %}
+    {% endif %}
+  </tbody>
+</table>
+
+</div>
+{% endblock %}

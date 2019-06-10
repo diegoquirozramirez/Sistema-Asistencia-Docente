@@ -1,0 +1,60 @@
+{% extends 'registration/login.html' %}
+{% load staticfiles %}
+
+
+{% block content  %}
+<h1 class="text-center">Configuraciones > Cursos > Horarios </h1>
+
+<div class="container">
+  <h3 class="text-left" ><a href="{% url 'Docente:Horario_Admin' %}">< Atrás</a></h3><br>
+  <form class=""  method="post">
+    {% csrf_token %}
+    {{ form.as_p}}
+    <!--a class="related-widget-wrapper-link change-related" id="change_id_idcurso" data-href-template="/admin/Curso/curso/__fk__/change/?_to_field=id&amp;_popup=1" title="Cambiar curso seleccionado"><img src="/static/admin/img/icon-changelink.svg" alt="Modificar"></a><a class="related-widget-wrapper-link add-related" id="add_id_idcurso" href="/admin/Curso/curso/add/?_to_field=id&amp;_popup=1" title="Añadir otro curso"><img src="/static/admin/img/icon-addlink.svg" alt="Añadir"></a>
+    <a class="related-widget-wrapper-link change-related" id="change_id_iduser" data-href-template="/admin/auth/user/__fk__/change/?_to_field=id&amp;_popup=1" title="Cambiar usuario seleccionado"><img src="/static/admin/img/icon-changelink.svg" alt="Modificar"></a><a class="related-widget-wrapper-link add-related" id="add_id_iduser" href="/admin/auth/user/add/?_to_field=id&amp;_popup=1" title="Añadir otro usuario"><img src="/static/admin/img/icon-addlink.svg" alt="Añadir"></a-->
+
+    <input type="submit" name="" value="Añadir Horario" style="BACKGROUND:#2684B3; color:white"  class="form-control text-center">
+
+  </form>
+  <br>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Identificador</th>
+        <th scope="col">Curso</th>
+        <th scope="col">Hora Inicial</th>
+        <th scope="col">Hora Final</th>
+        <th scope="col">Actividad</th>
+        <th scope="col">Firma</th>
+        <th scope="col">Observaciones</th>
+        <th scope="col">Docente</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% if horarios %}
+      {% for horarios in horarios %}
+      <tr>
+        <th scope="row">{{ horarios.id }}</th>
+        <th scope="row">{{ horarios.idcurso.curso }}</th>
+        <th scope="row">{{ horarios.h_entrada }}</th>
+        <th scope="row">{{ horarios.h_salida }}</th>
+        <th scope="row">{{ horarios.actividad }}</th>
+        <th scope="row">{{ horarios.f_digital }}</th>
+        <th scope="row">{{ horarios.observa }}</th>
+        <th scope="row">{{ horarios.iduser.username }}</th>
+      </tr>
+      {% endfor %}
+      {% else %}
+      <tr>
+        <th scope="row" colspan="8" class="text-center">Curso Sin Horario Establecido</th>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+
+
+</div>
+
+
+{% endblock %}

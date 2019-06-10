@@ -1,9 +1,12 @@
 {% extends 'index.html' %}
 
 {% block content  %}
-<h1 class="text-center">Configuraciones</h1>
+
+
 <section id="feature">
+  <h1 class="text-center">Configuraciones</h1>
       <div class="container">
+        <h3 class="text-left" ><a href="{% url 'Docente:index' %}">< Atrás</a></h3><br>
            <div class="row">
 
                 <div class="col-md-4 col-sm-4">
@@ -31,17 +34,17 @@
                   </a>
                 </div>
 
-                <!--div class="col-md-4 col-sm-4">
+                <div class="col-md-4 col-sm-4">
 
-                  <a href="{% url 'Docente:Consolidado' %}">
+                  <a href="{% url 'Docente:Horario_Admin' %}">
                      <div class="feature-thumb">
                           <span>03</span>
-                          <h3>Consolidado de Asistencias</h3>
-                          <p>Observa las asistencias de tus colaboradores, puedes decargarlo en formato PDF.</p>
+                          <h3>Defina Ajustes de Horarios</h3>
+                          <p>Realice actualizaciones entre otros y demás.</p>
                           <p><strong>Estás en modo {{ us.username  }}</strong></p>
                      </div>
                   </a>
-                </div-->
+                </div>
 
            </div>
       </div>

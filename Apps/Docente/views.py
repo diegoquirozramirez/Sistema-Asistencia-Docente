@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect,  get_object_or_404
 from Apps.Docente.models import  Categoria, Horario, Categoria, HoraEntrada, HoraSalida
-from Apps.Docente.forms import HorarioForm, HoraEntradaForm
+from Apps.Docente.forms import HorarioForm, HoraEntradaForm, CategoriaForm
 from Apps.Curso.models import Curso, Ciclo
 from django.http import HttpResponse,  Http404, HttpResponseRedirect
 from django.urls import reverse
@@ -22,7 +22,7 @@ import reportlab
 import io
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
-
+from django.db.models import Q
 
 ##########################3
 from io import BytesIO
@@ -224,15 +224,15 @@ def generar_pdf(request):
     styles = getSampleStyleSheet()
     header = Paragraph("Consolidado de Asistencias", styles['Heading1'])
     docentes.append(header)
-    headings = ('Fecha','Docente','Curso','Ciclo','Hora Entrada','Hora Salida')
-    allclientes = [(p.f_salida, p.id_hora_entrada.idcurso.iduser, p.id_hora_entrada.idcurso.curso,p.id_hora_entrada.idcurso.idciclo , p.id_hora_entrada.h_entrada_str, p.h_salida_str  ) for p in HoraSalida.objects.all()]
+    headings = ('Fecha','Docente','Curso','Ciclo','Marcaje','Firma')
+    allclientes = [(p.f_salida, p.id_hora_entrada.idcurso.iduser, p.id_hora_entrada.idcurso.curso,p.id_hora_entrada.idcurso.idciclo , p.id_hora_entrada.h_entrada_str+" | "+p.h_salida_str ) for p in HoraSalida.objects.all()]
 
     print(allclientes)
 
     t = Table([headings] + allclientes)
     t.setStyle(TableStyle(
         [
-            ('GRID', (0, 0), (5, -1), 1, colors.dodgerblue),
+            ('GRID', (0, 0), (6, -1), 1, colors.dodgerblue),
             ('LINEBELOW', (0, 0), (-1, 0), 2, colors.darkblue),
             ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue),
         ]
@@ -249,7 +249,7 @@ def configuracion(request):
     return render(request, 'configuracion/configuraciones.html')
 
 def AñadirDocente(request):
-    docentes = User.objects.all()
+    docentes = User.objects.filter(~Q(id = 1)) #no lista al administrador
     contexto = {'docentes':docentes}
     return render(request, 'configuracion/docentes.html', contexto)
 
@@ -258,3 +258,68 @@ class RegistroUsuario(CreateView):
     template_name = "configuracion/add_docentes.html"
     form_class = UserCreationForm
     success_url = reverse_lazy('Docente:AñadirDocente')
+
+def Horario_Admin(request):
+    cursos = Curso.objects.all().order_by('idciclo')
+    contexto = {'cursos':cursos}
+    return render(request, 'configuracion/horarios.html', contexto)
+
+def ConfHorario(request,  idcur):
+    if request.method == 'POST':
+        form = HorarioForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit = False)
+            post.h_entrada = post.date_time_entrada
+            post.h_salida = post.date_time_salida
+            post.idcurso_id = idcur
+            #post.iduser_id = request.user.id
+
+            #h_e = datetime.datetime.strptime(post.h_entrada, '%d/%m/%Y %H:%M')
+            #post.date_time_entrada = h_e
+            #h_s = datetime.datetime.strptime(post.h_salida, '%d/%m/%Y %H:%M')
+            #post.date_time_salida = h_s
+            #post.idcurso_id = idcur
+            post.save()
+            #return redirect('Docente:ConfHorario')
+            return HttpResponseRedirect(reverse('Docente:ConfHorario', args={str(idcur)}))
+    else:
+        form = HorarioForm()
+    horarios = Horario.objects.filter(idcurso_id=idcur)
+    contexto = {'form':form,'horarios': horarios}
+    return render(request, 'configuracion/add_horario.html', contexto)
+
+def Horarios_Admin(request, idcur):
+    horarios = Horario.objects.filter(idcurso_id=idcur)
+    contexto = {'horarios': horarios}
+    return render(request, 'configuracion/cursos_horario.html', contexto)
+
+def Categoria_Add(request,  idu):
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit = False)
+            #post.idcurso_id = idcur
+            post.iduser_id = idu
+
+            #h_e = datetime.datetime.strptime(post.h_entrada, '%d/%m/%Y %H:%M')
+            #post.date_time_entrada = h_e
+            #h_s = datetime.datetime.strptime(post.h_salida, '%d/%m/%Y %H:%M')
+            #post.date_time_salida = h_s
+            #post.idcurso_id = idcur
+            post.save()
+            #return redirect('Docente:AñadirDocente')
+            return HttpResponseRedirect(reverse('Docente:Categoria_Add', args={str(idu)}))
+    else:
+        form = CategoriaForm()
+    categoria = Categoria.objects.filter(iduser_id=idu)
+    contexto = {'form':form,'categoria': categoria}
+    return render(request, 'configuracion/add_categoria.html', contexto)
+
+def DardeBaja(request, idu):
+    usr = User.objects.filter(id=idu)
+    if usr[0].is_active == True:
+        User.objects.filter(id=idu).update(is_active=False)
+    else:
+        if usr[0].is_active == False:
+            User.objects.filter(id=idu).update(is_active=True)
+    return HttpResponseRedirect(reverse('Docente:AñadirDocente'))
