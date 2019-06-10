@@ -88,11 +88,6 @@
 
       </tr>
       {% endfor %}
-      {% endif %}
-      <tr>
-        <td></td>
-        <td></td>
-      </tr>
       <tr>
         <td colspan="3"><a class="form-control text-center btn btn-primary" href="{% url 'Docente:MarcarEntrada' asignatura.id  %}">Marcar Entrada</a>  </td>
         </tr>
@@ -128,6 +123,9 @@
         </td>
         <!--td colspan="3"><p align="center"><span style="font-size:80px">{% if hora_marcada_salida %}{% for hora_marcada_salida in hora_marcada_salida %}{{ hora_marcada_salida.h_salida_str }}{% endfor %}{% endif %}</span> </p> </td-->
       </tr>
+      {% endif %}
+    
+
       <tr>
         {% if diferenciaHEntrada  %}
         <td colspan="3"><p align="center"><span style="color:red; font-size:25px">Tarde: {{ diferenciaHEntrada }}</span></p></td>

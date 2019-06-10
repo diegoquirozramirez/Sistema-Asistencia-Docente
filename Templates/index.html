@@ -32,7 +32,7 @@
           <div class="container">
                <div class="row">
                     {% for us in us %}
-                    <div class="col-md-4 col-sm-4">
+                    <div class="col-md-6 col-sm-6">
                       <a href="{% url 'Docente:Configuracion' %}">
                          <div class="feature-thumb">
                               <span>01</span>
@@ -45,25 +45,13 @@
                     {% endfor %}
 
 
-                    {% for us in us %}
-                    <div class="col-md-4 col-sm-4">
-                      <a href="#">
-                         <div class="feature-thumb">
-                              <span>02</span>
-                              <h3>Asistencias por colaborador</h3>
-                              <p>Identifique de manera detallada la puntualidad.</p>
-                              <p><strong>Estás en modo {{ us.username  }}</strong></p>
-                         </div>
-                      </a>
-                    </div>
-                    {% endfor %}
 
                     {% for us in us %}
-                    <div class="col-md-4 col-sm-4">
+                    <div class="col-md-6 col-sm-6">
 
                       <a href="{% url 'Docente:Consolidado' %}">
                          <div class="feature-thumb">
-                              <span>03</span>
+                              <span>02</span>
                               <h3>Consolidado de Asistencias</h3>
                               <p>Observa las asistencias de tus colaboradores, puedes decargarlo en formato PDF.</p>
                               <p><strong>Estás en modo {{ us.username  }}</strong></p>
