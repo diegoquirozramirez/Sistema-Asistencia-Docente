@@ -44,7 +44,9 @@ def index(request):
         context = {'us':us}
         return render(request, 'index.html', context)
     else:
-        return render(request, 'index.html')
+        cursos = Curso.objects.filter(iduser_id=request.user.id)
+        contexto = {'cursos':cursos}
+        return render(request, 'index.html', contexto)
     return render(request, 'index.html')
 
 #def Add_Horario(request, idcur):
